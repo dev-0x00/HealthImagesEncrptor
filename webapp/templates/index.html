@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+ <head>
+	<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+	
+	<title>Authentication | Signup</title>
+	
+	<link rel='stylesheet' type='text/css' href='static/style.css' />
+	
+	<!--[if IE]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+	
+    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js'></script>
+    <script type='text/javascript' src='js/jquery.ba-hashchange.min.js'></script>
+    <script type='text/javascript' src='js/dynamicpage.js'></script>
+</head>
+
+<body>
+
+	<div class="container">
+    <?php include('../header.php'); ?>
+     <div class="nav-bar">
+	    <nav>
+		    <div class="Logo" style="color: cyan;">HealthImageEncryptor</div>
+		    	<ul>
+			<li><a href="{{ url_for('logout') }}">Logout</a></li>
+			<li><a  href="{{ url_for('register') }}"></a></li>
+		    	</ul>
+	   </nav>
+    </div>
+    <section id="main-content">
+	<div id="guts">
+		<div class="about-section" style="margin-left: 30%;">
+			<div class='image-2'>
+				<img  src="./static/images/image-3.jpeg" alt="image" width='500px' height='500px' style="padding-top: -0px;">
+				</div>
+
+			</div>
+			<div class="section-paragraph" align='left' style="margin-left: 5%;">
+			<h1>ImageEncryptor<hr class="horizantal"></h1>
+			<h2>Welcome  {{username}}.</h2>
+			<p style="margin-bottom: 50%; padding-top: 20px;"> This is just a simple web interface to validate the faceAuthentication application.</p>
+			<hr class="horizantal-1"></p>
+	
+			</div>
+
+	<div class="Encryption" style="width: 500px; height: 500px; border: solid cyan">
+		<h1>{{rootPath}}</h1>
+		<ul>	
+		{%- for key, value  in Directories.items()%}
+			{%- for item in value %}
+				{% if "." in item %}
+				<li style="color: cyan;">{{item}}</li>
+				{% else %}
+				<li style="color: yellow;">{{item}}</li>
+				{% endif %}
+			{%- endfor %}
+		{%- endfor %}
+		</ul>
+
+		</ul>
+		<button class="btn-workers" style="float left" onclick="popBox()">Encrypt:</button>
+		</div>
+	<div class="Decryption" style="width: 500px; height: 500px; border: solid cyan">
+		<h1>{{rootPath}}</h1>
+		<ul>
+		{%- for key, value  in Directories.items()%}
+			{%- for item in value %}
+				{% if "." in item %}
+				<li style="color: cyan;">{{item}}</li>
+				{% else %}
+				<li style="color: yellow;">{{item}}</li>
+				{% endif %}
+			{%- endfor %}
+		{%- endfor %}
+		</ul>
+		<button class="btn-workers" id="button" onClick="popBox()">Decrypt:</button>
+	</div>
+	</div>
+<div id="worker" class="worker1" style="border: solid cyan; width: 500px; height: 500px;">
+	<span class="close">&times;</span>
+		<form >
+			<p style="margin-top: 3%; font-size:0.9rem;padding-left:3%; color: cyan;">Enter file to Decrypt:</p><br> <input type ="text" name = "first_name" />
+	</div>
+
+
+<?php include('../footer.php'); ?>
+
+<script>
+	function popBox()
+	{
+
+		//gets the div with encryption and decryption variales and fucntions
+		var popup = document.getElementById("worker");
+		popup.style.display = "block";
+		var overflow = document.getElementById('guts')
+		overflow.style.cssText = 'filter: blur(3px);';
+	}
+
+	//the span element that closes the modal box
+	var span = document.getElementByClassName("close")[0];
+
+	//the button that opens the modal class
+	var btn = document.getElementById("button");
+
+	btn.onclick = function()
+	{
+		popup.style.display = "block";
+	}
+
+	span.onclick = function()
+	{
+		popup.style.display = "none";
+	}
+
+	window.onclick = function(event)
+	{
+		if (event.target == popup)
+		{	
+			popup.style.display = "none";
+		}
+
+	}
+
+	
+</script>
+
+</body>
+</html>
