@@ -29,7 +29,7 @@ def home():
     if 'loggedin' in session:
         Directory = mainClass()
         rootName = os.getcwd().split("/")[-1]
-        return render_template('index.html', Directories=Directory.DirectoryListing(os.getcwd()), username=session['username'])
+        return render_template('index.html', Directories=Directory.DirectoryListing("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive"), username=session['username'])
     return redirect(url_for('login'))
 
 @app.route('/Login', methods=['GET', 'POST'])
@@ -77,10 +77,16 @@ def register():
         cursor.close()
         while True:
             return redirect(url_for('login'))
-        time.sleep(3)
-        generator1 = "[*]Using Hash to salt keys: ...]"
-        generator2 = "[*] Encrpyting file, this might take time:..."
-        return(mainClass.Encryptor(os.path.joint(os.getcwd(), fileOrDir)))
+
+    return render_template("signup.html")
+
+@app.route("/cipher")
+def encryptpr():
+    """
+    time.sleep(3)
+    generator1 = "[*]Using Hash to salt keys: ...]"
+    generator2 = "[*] Encrpyting file, this might take time:..."
+    return(mainClass.Encryptor(os.path.joint(os.getcwd(), fileOrDir)))
 
     elif os.path.isdir(fileOrDir):
         imageFiles = [] 
@@ -89,27 +95,62 @@ def register():
                 imageFiles.append(os.path.join(path, fileName))
         for fileName in imageFiles:
             return(mainclass.Encryptor(fileName))
+    """
 
 
 
-@app.route("/Home", methods=["POST", "GET"])
-def Operator():
+@app.route("/Home", methods=["POST"])
+def Encrypt():
+    path = "/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive"
+    os.chdir(path)
     if request.method == "POST":
-        files = request.form
-        fileOrDir = files["fileordir"]
-        print(os.path.join(os.getcwd(), fileOrDir))
+        fileOrDir = request.form["fileordir"]
+
     if os.path.isfile(fileOrDir):
-        return(mainClass.Decryptor(os.path.join(os.getcwd(), fileOrDir)))
+        print(fileOrDir)
+        print(os.path.join(path, fileOrDir))
+        a = mainClass()
+        a.Encryptor(os.path.join(path, fileOrDir))
     
-    elif os.path.isfile(fileOrDir):
+    elif os.path.isdir(fileOrDir):
         imageFiles = []
+        print(path)
         for (path, dirs, files) in os.walk(fileOrDir):
             for fileName in files:
                 imageFiles.append(os.path.join(path, fileName))
 
         for fileName in imageFiles:
-            return(mainClass.Decryptor(fileName))
+            a = mainClass()
+            (a.Encryptor(fileName))
+    
+    return redirect(url_for("home"))
 
+@app.route("/Home", methods=["POST"])
+def Decrypt():
+    path = "/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive"
+    os.chdir(path)
+    print(os.getcwd())
+    if request.method == "POST":
+        fileOrDir = request.form["fileordir"]
+
+    if os.path.isfile(fileOrDir):
+        print(fileOrDir)
+        print(os.path.join(path, fileOrDir))
+        a = mainClass()
+        a.Decryptor(os.path.join(path, fileOrDir))
+
+    elif os.path.isdir(fileOrDir):
+        imageFiles = []
+        print(path)
+        for (path, dirs, files) in os.walk(fileOrDir):
+            for fileName in files:
+                imageFiles.append(os.path.join(path, fileName))
+
+        for fileName in imageFiles:
+            a = mainClass()
+            (a.Decryptor(fileName))
+    
+    return redirect(url_for("home"))
 
 
 
