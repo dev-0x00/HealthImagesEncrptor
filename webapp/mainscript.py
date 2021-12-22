@@ -43,7 +43,7 @@ class mainClass(object):
 
         with open(plainFile, 'rb') as plainFile:
             directory = filePath.split("/")[:-1]
-            cipherFilePath =  filePath.split("/")[-1] + ".enc"
+            cipherFilePath =  filePath.split("/")[-1] + ".enc)"
             directory.append(cipherFilePath)
             cipherFile = "/".join(directory)
             print(cipherFile)
@@ -66,16 +66,15 @@ class mainClass(object):
     def Decryptor(self, cipherFile, chunkSize=64*1024):
         key = self.GenerateKey()
         filePath = cipherFile
-        print(filePath)
         with open(cipherFile, 'rb') as cipherFile:
             originalSize = struct.unpack('<Q', cipherFile.read(struct.calcsize('Q')))[0]
             iv = cipherFile.read(16)
             decryptor = AES.new(key.decode(), AES.MODE_CBC, iv)
 
             directory = filePath.split("/")[:-1]
-            plainFilePath = filePath.split("/")[-1].split(".")[-1]
+            plainFilePath = filePath.split("/")[-1].split(".")
             print(directory, plainFilePath)
-            plainFile = ".".join(plainFilePath) 
+            plainFile = ".".join(plainFilePath)
             directory.append(plainFile)
             plainFile = "/".join(directory)
 
@@ -95,4 +94,4 @@ class mainClass(object):
 
 if __name__ == "__main__":
     serve = mainClass()
-    serve.Encryptor("/home/dev/personalProjects/inovators/johnBCSF/archive/chest.jpeg")
+    serve.Decryptor("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive/file.pdf.enc")

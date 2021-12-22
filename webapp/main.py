@@ -6,7 +6,7 @@ import MySQLdb.cursors
 import re, os
 
 from mainscript import mainClass
-
+import decryptor, encryptor, keyGen
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'memcached'
@@ -30,6 +30,7 @@ def home():
         Directory = mainClass()
         rootName = os.getcwd().split("/")[-1]
         return render_template('index.html', Directories=Directory.DirectoryListing("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive"), username=session['username'])
+
     return redirect(url_for('login'))
 
 @app.route('/Login', methods=['GET', 'POST'])
@@ -80,76 +81,89 @@ def register():
 
     return render_template("signup.html")
 
-@app.route("/cipher")
-def encryptpr():
-    """
-    time.sleep(3)
-    generator1 = "[*]Using Hash to salt keys: ...]"
-    generator2 = "[*] Encrpyting file, this might take time:..."
-    return(mainClass.Encryptor(os.path.joint(os.getcwd(), fileOrDir)))
-
-    elif os.path.isdir(fileOrDir):
-        imageFiles = [] 
-        for (path, dirs, filesName) in os.walk(fileOrDir):
-            for fileName in files:
-                imageFiles.append(os.path.join(path, fileName))
-        for fileName in imageFiles:
-            return(mainclass.Encryptor(fileName))
-    """
-
 
 
 @app.route("/Home", methods=["POST"])
-def Encrypt():
+def operator():
     path = "/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive"
     os.chdir(path)
     if request.method == "POST":
         fileOrDir = request.form["fileordir"]
-
     if os.path.isfile(fileOrDir):
-        print(fileOrDir)
-        print(os.path.join(path, fileOrDir))
-        a = mainClass()
-        a.Encryptor(os.path.join(path, fileOrDir))
-    
-    elif os.path.isdir(fileOrDir):
-        imageFiles = []
-        print(path)
-        for (path, dirs, files) in os.walk(fileOrDir):
-            for fileName in files:
-                imageFiles.append(os.path.join(path, fileName))
+        if os.path.join(path, fileOrDir).endswith(".enc"):
+            keyDir = "/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/webapp/keys"
+            keyList = os.listdir(keyDir)
+            thisFile = fileOrDir.split(".")[0] + ".key"
+            if thisFile in keyList:
+                os.chdir(keyDir)
+                with open(thisFile, 'rb') as secreteKey:
+                    content = secreteKey.read()
+                    cipherText = fileOrDir
+                    plainText = fileOrDir.split(".")[0] + "." + fileOrDir.split(".")[1]
+                    path = ("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive")
+                    os.chdir(path)
+                    decryptor.decryptCipher(content, cipherText, plainText)
+                    os.system("rm {}".format(fileOrDir))
+                       
 
-        for fileName in imageFiles:
+            '''
+            print(fileOrDir)
+            a = mainClass()
+            a.Decryptor(os.path.join(path, fileOrDir))
+            '''
+
+        extensions = ["jpg", "jpeg", "png", "gif"]
+        for extension in extensions:
+            if os.path.join(path, fileOrDir).endswith("{}".format(extension)):
+                key = keyGen.generateKey()
+                plainFile = fileOrDir
+                cipherFile = fileOrDir + ".enc"
+                encryptor.encryptFile(key, plainFile, cipherFile)
+                os.system("rm {}".format( fileOrDir))
+                keyFile = plainFile.split(".")[0] + ".key"
+                os.chdir("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/webapp/keys")
+                keyGen.saveKey(key, keyFile)
+                '''
+                a = mainClass()
+                a.Encryptor(os.path.join(path, fileOrDir))
+                '''
+
+    elif os.path.isdir(fileOrDir):
+        path = os.getcwd()
+        os.chdir(path+'/'+fileOrDir)
+        for fileName in os.listdir():
+            print(fileName)
+            if fileName.endswith("png"):
+                key = keyGen.generateKey()
+                plainFile = fileName
+                cipherFile = fileName + ".enc"
+                encryptor.encryptFile(key, plainFile, cipherFile)
+                os.system("rm {}".format( fileName))
+                keyFile = plainFile.split(".")[0] + ".key"
+                os.chdir("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/webapp/keys")
+                keyGen.saveKey(key, keyFile)
+                Directory = mainClass()
+                return render_template('index.html', Directories=Directory.DirectoryListing("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive/{}".format(fileOrDir)), username=session['username'])
+
+            if os.path.join(path, fileOrDir).endswith(".enc"):
+                keyDir = "/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/webapp/keys"
+                keyList = os.listdir(keyDir)
+                thisFile = fileOrDir.split(".")[0] + ".key"
+                if thisFile in keyList:
+                    os.chdir(keyDir)
+                    with open(thisFile, 'rb') as secreteKey:
+                        content = secreteKey.read()
+                        cipherText = fileOrDir
+                        plainText = fileOrDir.split(".")[0] + "." + fileOrDir.split(".")[1]
+                        path = ("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive")
+                        os.chdir(path)
+                        decryptor.decryptCipher(content, cipherText, plainText)
+                        os.system("rm {}".format(fileOrDir))
+
+            '''
             a = mainClass()
             (a.Encryptor(fileName))
-    
-    return redirect(url_for("home"))
-
-@app.route("/Home", methods=["POST"])
-def Decrypt():
-    path = "/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive"
-    os.chdir(path)
-    print(os.getcwd())
-    if request.method == "POST":
-        fileOrDir = request.form["fileordir"]
-
-    if os.path.isfile(fileOrDir):
-        print(fileOrDir)
-        print(os.path.join(path, fileOrDir))
-        a = mainClass()
-        a.Decryptor(os.path.join(path, fileOrDir))
-
-    elif os.path.isdir(fileOrDir):
-        imageFiles = []
-        print(path)
-        for (path, dirs, files) in os.walk(fileOrDir):
-            for fileName in files:
-                imageFiles.append(os.path.join(path, fileName))
-
-        for fileName in imageFiles:
-            a = mainClass()
-            (a.Decryptor(fileName))
-    
+            '''
     return redirect(url_for("home"))
 
 

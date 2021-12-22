@@ -45,29 +45,30 @@
 	
 			</div>
 
-	<div class="Encryption" style="width: 500px; height: 500px; border: solid cyan; overflow: auto;">
-		<h1>{{rootPath}}</h1>
-		<ul>	
-		{%- for key, value  in Directories.items()%}
-			{%- for item in value %}
-				{% if "." in item %}
-				<li style="color: cyan;">{{item}}</li>
-				{% else %}
-				<li style="color: yellow;">{{item}}</li>
-				{% endif %}
+	 <div class="Encryption" style="width: 500px; height: 500px; border: solid cyan; overflow: auto">
+		<h1>archive</h1>
+		<div class="worked" style="overflow: auto">
+			<ul>	
+			{%- for key, value  in Directories.items()%}
+				{%- for item in value %}
+					{% if "." in item %}
+					<li style="color: cyan;">{{item}}</li>
+					{% else %}
+					<li style="color: yellow;">{{item}}</li>
+					{% endif %}
+				{%- endfor %}
 			{%- endfor %}
-		{%- endfor %}
-		</ul>
+			</ul>
 
-		</ul>
+		</div>
 		<div>
-			<button class="btn-workers" style="float left;"onclick="popEncrypt()">Encrypt:</button>
+			<button class="btn-workers" style="float right;"onclick="operator()">Encrypt:</button>
 		</div>
 	</div>
-	<div class="Decryption" style="width: 500px; height: 500px; border: solid cyan">
-		<h1>{{rootPath}}</h1>
-		<div style="padding-bottom: 0%;">
-			<ul style="margin-top: 0%;">
+	<div class="Decryption" style="width: 500px; height: 500px; border: solid cyan; overflow: auto;">
+		<h1>Archive</h1>
+		<div class="worked" style="overflow: auto">
+			<ul>
 			{%- for key, value  in Directories.items()%}
 				{%- for item in value %}
 					{% if "." and ".enc" in item %}
@@ -79,32 +80,26 @@
 			{%- endfor %}
 			</ul>
 		</div>
-		<button class="btn-workers" style="float left;"  onclick="popDecrypt()">Decrypt:</button>
+		<button class="btn-workers" style="float right;"  onclick="operator()">Decrypt:</button>
 	</div>
 	</div>
-	<div id="Encrypt" class="worker1" style="border: solid cyan; width: 500px; height: 500px; overflow: auto;">
-		<span class="close">&times;</span>
+	<div id="operator" class="worker1" style="border: solid cyan; width: 500px; height: 500px; overflow: auto;">
+		<button onclick="document.getElementById('worker1').style.display='none'" class="close">&times;</button>
 			<form method="POST" action="" >
-				<p style="margin-top: 3%; font-size:0.9rem;padding-left:3%; color: cyan;">Enter file to Encrypt:</p><br> <input type ="text" name = "fileordir" />
+				<p style="margin-top: 3%; font-size:0.9rem;padding-left:3%; color: cyan;">Enter file to Encrypt/Decrypt:</p><br> <input type ="text" name = "fileordir" />
 				<button  type="submit" class="btn-workers" >Submit</button>
 		</div>
-	<div id="Decrypt" class="worker1" style="border: solid cyan; width: 500px; height: 500px; overflow: auto;">
-		<span class="close">&times;</span>
-			<form method="POST" action="" >
-				<p style="margin-top: 3%; font-size:0.9rem;padding-left:3%; color: cyan;">Enter file to Decrypt:</p><br> <input type ="text" name = "fileordir" />
-	<button  type="submit" class="btn-workers" >Submit</button>
-</div>
 	
 
 
 <?php include('../footer.php'); ?>
 
 <script>	
-	function popDecrypt()
+	function operator()
 	{
 
 		//gets the div with encryption and decryption variales and fucntions
-		var popup = document.getElementById("Decrypt");
+		var popup = document.getElementById("operator");
 		popup.style.display = "block";
 		var overflow = document.getElementById('guts')
 		overflow.style.cssText = 'filter: blur(3px);';
@@ -123,7 +118,7 @@
 
 	span.onclick = function()
 	{
-		popup.style.display = "none";
+		popup.style.display = "hide";
 	}
 
 	window.onclick = function(event)
@@ -135,42 +130,6 @@
 
 	}
 
-
-
-	function popEncrypt()
-	{
-
-		//gets the div with encryption and decryption variales and fucntions
-		var popup = document.getElementById("Encrypt");
-		popup.style.display = "block";
-		var overflow = document.getElementById('guts')
-		overflow.style.cssText = 'filter: blur(3px);';
-	}
-
-	//the span element that closes the modal box
-	var span = document.getElementByClassName("close")[0];
-
-	//the button that opens the modal class
-	var btn = document.getElementById("button");
-
-	btn.onclick = function()
-	{
-		popup.style.display = "block";
-	}
-
-	span.onclick = function()
-	{
-		popup.style.display = "none";
-	}
-
-	window.onclick = function(event)
-	{
-		if (event.target == popup)
-		{	
-			popup.style.display = "none";
-		}
-
-	}
 	
 </script>
 
