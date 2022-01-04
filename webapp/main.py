@@ -6,7 +6,7 @@ import MySQLdb.cursors
 import re, os
 
 from mainscript import mainClass
-import decryptor, encryptor, keyGen
+import worker
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'memcached'
@@ -85,86 +85,51 @@ def register():
 
 @app.route("/Home", methods=["POST"])
 def operator():
-    path = "/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive"
+    path = ("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive")
     os.chdir(path)
     if request.method == "POST":
         fileOrDir = request.form["fileordir"]
-    if os.path.isfile(fileOrDir):
-        if os.path.join(path, fileOrDir).endswith(".enc"):
-            keyDir = "/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/webapp/keys"
-            keyList = os.listdir(keyDir)
-            thisFile = fileOrDir.split(".")[0] + ".key"
-            if thisFile in keyList:
-                os.chdir(keyDir)
-                with open(thisFile, 'rb') as secreteKey:
-                    content = secreteKey.read()
-                    cipherText = fileOrDir
-                    plainText = fileOrDir.split(".")[0] + "." + fileOrDir.split(".")[1]
-                    path = ("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive")
-                    os.chdir(path)
-                    decryptor.decryptCipher(content, cipherText, plainText)
-                    os.system("rm {}".format(fileOrDir))
-                       
+        password = "Even a fool knows the secret is understanding"
+        print(fileOrDir)
+        work = worker.Encryptor(password)
+        if os.path.isfile(fileOrDir):
+            if os.path.join(path, fileOrDir).endswith(".enc"): 
+                cipherText = fileOrDir
+                os.chdir("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive")
+                work.decrypt_file(fileOrDir)
+                #call decryption function
+             
+            extensions = ["jpg", "jpeg", "png", "gif"]
+            for extension in extensions:
+                if os.path.join(path, fileOrDir).endswith("{}".format(extension)):
+                    work.encrypt_file(fileOrDir)
 
-            '''
-            print(fileOrDir)
-            a = mainClass()
-            a.Decryptor(os.path.join(path, fileOrDir))
-            '''
-
-        extensions = ["jpg", "jpeg", "png", "gif"]
-        for extension in extensions:
-            if os.path.join(path, fileOrDir).endswith("{}".format(extension)):
-                key = keyGen.generateKey()
-                plainFile = fileOrDir
-                cipherFile = fileOrDir + ".enc"
-                encryptor.encryptFile(key, plainFile, cipherFile)
-                os.system("rm {}".format( fileOrDir))
-                keyFile = plainFile.split(".")[0] + ".key"
-                os.chdir("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/webapp/keys")
-                keyGen.saveKey(key, keyFile)
-                '''
-                a = mainClass()
-                a.Encryptor(os.path.join(path, fileOrDir))
-                '''
-
-    elif os.path.isdir(fileOrDir):
-        path = os.getcwd()
-        os.chdir(path+'/'+fileOrDir)
-        for fileName in os.listdir():
-            print(fileName)
-            if fileName.endswith("png"):
-                key = keyGen.generateKey()
-                plainFile = fileName
-                cipherFile = fileName + ".enc"
-                encryptor.encryptFile(key, plainFile, cipherFile)
-                os.system("rm {}".format( fileName))
-                keyFile = plainFile.split(".")[0] + ".key"
-                os.chdir("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/webapp/keys")
-                keyGen.saveKey(key, keyFile)
+        elif os.path.isdir(fileOrDir):
+            path = os.getcwd()
+            directory = (path+'/'+fileOrDir)
+            if directory.endswith(".enc"):
+                work.decrypt_all_files(directory)
+                #call directory decryptory
+                print(directory)
                 Directory = mainClass()
-                return render_template('index.html', Directories=Directory.DirectoryListing("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive/{}".format(fileOrDir)), username=session['username'])
+                directory1 = directory.split("/")[-1].split(".")[0]
+                directory2 = directory.split("/")
+                directory2.pop()
+                directory3 = "/".join(directory2) + "/" + directory1
+                return render_template('index.html', Directories=Directory.DirectoryListing(directory3), username=session['username'])
 
-            if os.path.join(path, fileOrDir).endswith(".enc"):
-                keyDir = "/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/webapp/keys"
-                keyList = os.listdir(keyDir)
-                thisFile = fileOrDir.split(".")[0] + ".key"
-                if thisFile in keyList:
-                    os.chdir(keyDir)
-                    with open(thisFile, 'rb') as secreteKey:
-                        content = secreteKey.read()
-                        cipherText = fileOrDir
-                        plainText = fileOrDir.split(".")[0] + "." + fileOrDir.split(".")[1]
-                        path = ("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive")
-                        os.chdir(path)
-                        decryptor.decryptCipher(content, cipherText, plainText)
-                        os.system("rm {}".format(fileOrDir))
+            else:
+                work.encrypt_all_files(directory)
+                #call directory encrypt
+                Directory = mainClass()
+                directory1 = directory.split("/")[-1]  + ".enc"
+                directory2 = directory.split("/")
+                directory2.pop()
+                directory3 = "/".join(directory2) + "/" + directory1
+                return render_template('index.html', Directories=Directory.DirectoryListing(directory3), username=session['username'])
 
-            '''
-            a = mainClass()
-            (a.Encryptor(fileName))
-            '''
-    return redirect(url_for("home"))
+         
+        return redirect(url_for("home"))
 
 
 

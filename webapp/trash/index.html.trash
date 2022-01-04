@@ -3,7 +3,7 @@
  <head>
 	<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
 	
-	<title>Encryptor | Home</title>
+	<title>Authentication | Signup</title>
 	
 	<link rel='stylesheet' type='text/css' href='static/style.css' />
 	
@@ -33,15 +33,14 @@
 	<div id="guts">
 		<div class="about-section" style="margin-left: 30%;">
 			<div class='image-2'>
-				<img  src="./static/images/image-3.jpeg" alt="image" width='600px' height='500px' style="padding-top: -0px; position: absolute; margin-right: 10%;">
+				<img  src="./static/images/image-3.jpeg" alt="image" width='500px' height='500px' style="padding-top: -0px;">
 				</div>
 
 			</div>
 			<div class="section-paragraph" align='left' style="margin-left: 5%;">
 			<h1>ImageEncryptor<hr class="horizantal"></h1>
 			<h2>Welcome  {{username}}.</h2>
-			<p style="margin-bottom: 50%; padding-top: 20px;"> here we encrypt and decryt medical images in archive directory using AES 256 CBC MODE
-			and a passord.</p>
+			<p style="margin-bottom: 50%; padding-top: 20px;"> This is just a simple web interface to validate the faceAuthentication application.</p>
 			<hr class="horizantal-1"></p>
 	
 			</div>
@@ -52,12 +51,10 @@
 			<ul>	
 			{%- for key, value  in Directories.items()%}
 				{%- for item in value %}
-					{% if "." and ".enc" in item %}
-					<li style="color: blue;">{{item}}</li>
-					{% elif "." not in item %}
-					<li style="color: yellow;">{{item}}</li>
-					{% else %}
+					{% if "." in item %}
 					<li style="color: cyan;">{{item}}</li>
+					{% else %}
+					<li style="color: yellow;">{{item}}</li>
 					{% endif %}
 				{%- endfor %}
 			{%- endfor %}
@@ -65,7 +62,7 @@
 
 		</div>
 		<div>
-			<button class="btn-workers" style="float right;"onclick="Encryptor()">Encrypt:</button>
+			<button class="btn-workers" style="float right;"onclick="operator()">Encrypt:</button>
 		</div>
 	</div>
 	<div class="Decryption" style="width: 500px; height: 500px; border: solid cyan; overflow: auto;">
@@ -83,36 +80,26 @@
 			{%- endfor %}
 			</ul>
 		</div>
-		<button class="btn-workers" style="float right;"  onclick="Encryptor()">Decrypt:</button>
+		<button class="btn-workers" style="float right;"  onclick="operator()">Decrypt:</button>
 	</div>
 	</div>
-	<div id="encryptor" class="worker1" style="border: solid cyan; width: 500px; height: 500px; overflow: auto;">
-		<button onclick="document.getElementById('encryptor').style.display='none', document.getElementById('guts').style.cssText='filter: blur(0px)'
-" class="close">&times;</button>
+	<div id="operator" class="worker1" style="border: solid cyan; width: 500px; height: 500px; overflow: auto;">
+		<button onclick="document.getElementById('worker1').style.display='none'" class="close">&times;</button>
 			<form method="POST" action="" >
-				<p style="margin-top: 3%; font-size:0.9rem;padding-left:3%; color: cyan;">Enter file or Directory:</p><br> 
-				<input type ="text" name = "fileordir" />
+				<p style="margin-top: 3%; font-size:0.9rem;padding-left:3%; color: cyan;">Enter file to Encrypt/Decrypt:</p><br> <input type ="text" name = "fileordir" />
 				<button  type="submit" class="btn-workers" >Submit</button>
 		</div>
-
-	<div id="encryptor" class="worker1" style="border: solid cyan; width: 500px; height: 500px; overflow: auto;">
-		<button onclick="document.getElementById('Decryptor').style.display='none'" class="close">&times;</button>
-			<form method="POST" action="" >
-				<p style="margin-top: 3%; font-size:0.9rem;padding-left:3%; color: cyan;">Enter file or Directory:</p><br> <input type ="text" name = "fileordir" />
-				<button  type="submit" class="btn" >Submit</button>
-		</div>
-
+	
 
 
 <?php include('../footer.php'); ?>
 
 <script>	
-
-	function Encryptor()
+	function operator()
 	{
 
 		//gets the div with encryption and decryption variales and fucntions
-		var popup = document.getElementById("encryptor");
+		var popup = document.getElementById("operator");
 		popup.style.display = "block";
 		var overflow = document.getElementById('guts')
 		overflow.style.cssText = 'filter: blur(3px);';

@@ -1,4 +1,3 @@
-
 /*
 	 CSS-Tricks Example
 	 by Chris Coyier
@@ -38,7 +37,8 @@ a:focus { outline: 0; }
     width: 100%;
     height: 100px;
     background-color: black !important;
-    z-index: 1;	
+    z-index: 1;
+	
 }
 nav{
 	position: fixed;
@@ -79,8 +79,8 @@ nav ul li
 nav ul li a 
 {
 	line-height: 80px;
-	color: cyan;
-	font-size: 1.2rem;
+	color: green;
+	font-size: 1rem;
 	padding: 6px 10px;
 	text-decoration: none;
 	text-transform: none;
@@ -96,7 +96,7 @@ nav ul li a:active a:focus
 nav ul li a:hover
 {
 	background: purple;
-	color: cyan;
+	color: yellow;
 	border-radius: 6px;
 }
 
@@ -135,57 +135,9 @@ section #main-content
 	height: 100%;
 	width: 550px;
 	margin-top: -3%;
-	padding-left: 5%;
+	padding-left: 60px;
 	padding-top: 0px;
 }
-
-.section-paragraph-2
-{
-	float: left;
-	height: 100%;
-	width: 550px;
-	margin-top: -3%;
-	padding-left: 5%;
-	padding-top: 0px;
-}
-
-
-
-.Encryption
-{
-	float: left;
-	overflow: hidden;
-	margin-top: 5.5%;
-	margin-left: 15%;
-	padding-left: 2%;
-}
-
-.Decryption
-{
-	float: left;
-	overflow: hidden;
-	margin-top: 5%;
-	margin-left: 5%;
-	padding-left:2%;
-	margin-right: 10%;
-}
-
-.Encryption  ul li
-{
-	font-weight: ;
-	color: cyan;
-	font-size: 1.0rem;
-	
-}
-
-.Decryption ul li
-{
-	font-weight: ;
-	color: cyan;
-	font-size: 1.0rem;
-	
-}
-
 
 .section-paragraph h1
 {
@@ -194,20 +146,6 @@ section #main-content
 	color: yellow;
 	font-size: 1.2rem;
 	
-}
-
-.Decryption p
-{
-	color: yellow;
-	font-size: 1.1rem;
-	padding-bottom: 2%
-}
-
-.Encryption p
-{
-	color: yellow;
-	font-size: 1.1rem;
-	padding-bottom: 2%
 }
 
 .horizantal
@@ -234,11 +172,11 @@ section #main-content
 	width: 450px;
 	height: 500px;
 	overflow: hidden;
-	padding-top: 0px;
+	padding-top: 60px;
 	padding-right: 100px;
-	margin-top: 0%;
+	margin-top: 0%;i
 	position: relative;
-	margin-right: 50px;
+	margin: 0;
 }
 
 .section-paragraph p
@@ -594,7 +532,7 @@ ul{margin-top:3%; padding:15px;}
 
 .input-container input{
   border:0;
-  border-bottom:1px solid cyan;
+  bo/rder-bottom:1px solid cyan;
   background:transparent;
   width:80%;
   margin-left: 60px;
@@ -623,68 +561,6 @@ ul{margin-top:3%; padding:15px;}
 	cursor:pointer;
 	position:relative;
 }
-.btn-workers{
-	position: none;
-  	bottom: 0.5em; 
-	color: cyan;
-	background-color: cyan;
-	outline: none;
-    	border: 0;
-    	color: green;
-	padding:10px 20px;
-	margin-left: 2%;
-	margin-top: 4%;
-	margin-bottom: 10%;
-	text-transform:uppercase;	
-	border-radius:10px;
-	cursor:pointer;
-
-}
-
-.worker1
-{
-	display: none;
-	position: fixed;
-	z-index: 999;
-	margin-top: 100px;
-	overflow: auto;
-	margin-left: 35%;
-	box-shadow: 1px 2px 6px rgba(0, 0, 0, 0.4);
-	filter: blur(0px);
-	-webkit-backdrop-filter: blur(2px);
-	backdrop-filter: blur(2px);
-	background-color: rgb(0,0,0);
-	background-color: rgba(0, 0, 0, 0.4);
-
-}
-
-body :not(.worker1)
-{
-	filter: blur(px);
-}
-
-.close
-{
-	color: cyan;
-  	float: right;
-	padding-right: 7px;
-  	font-size: 28px;
-  	font-weight: bold;
-
-}
-
-.worker1 input[type=text] 
-{
-  width: 90%;
-  margin-left: 3%;
-  margin-right:3%;
-  background-color: black;
-  color: green;
-  border-style: none;
-  border-bottom: 2px solid cyan;
-}
-
-
 .input-container input:focus ~ label,
 .input-container input:valid ~ label{
 	top:-15px;
@@ -692,3 +568,5 @@ body :not(.worker1)
 	
 }
 /*footer { color: #999; margin: 0 auto; width: -500px; }*/
+
+
