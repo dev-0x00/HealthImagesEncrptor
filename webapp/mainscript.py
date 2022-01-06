@@ -94,4 +94,4 @@ class mainClass(object):
 
 if __name__ == "__main__":
     serve = mainClass()
-    serve.Decryptor("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive/file.pdf.enc")
+    serve.Decryptor("")

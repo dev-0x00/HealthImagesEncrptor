@@ -10,13 +10,13 @@ import worker
 
 app = Flask(__name__)
 app.config['SESSION_TYPE'] = 'memcached'
-app.secret_key = '1l0v3sh3an0r3'
+app.secret_key = ''
 #sess = session(    )
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'root'
-app.config['MYSQL_DB'] = 'faceAuthentication'
+app.config['MYSQL_DB'] = ''
 
 mysql = MySQL(app)
 
@@ -29,7 +29,7 @@ def home():
     if 'loggedin' in session:
         Directory = mainClass()
         rootName = os.getcwd().split("/")[-1]
-        return render_template('index.html', Directories=Directory.DirectoryListing("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive"), username=session['username'])
+        return render_template('index.html', Directories=Directory.DirectoryListing(""), username=session['username'])
 
     return redirect(url_for('login'))
 
@@ -85,7 +85,7 @@ def register():
 
 @app.route("/Home", methods=["POST"])
 def operator():
-    path = ("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive")
+    path = ("")
     os.chdir(path)
     if request.method == "POST":
         fileOrDir = request.form["fileordir"]
@@ -95,7 +95,7 @@ def operator():
         if os.path.isfile(fileOrDir):
             if os.path.join(path, fileOrDir).endswith(".enc"): 
                 cipherText = fileOrDir
-                os.chdir("/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/archive")
+                os.chdir("")
                 work.decrypt_file(fileOrDir)
                 #call decryption function
              

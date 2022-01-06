@@ -92,7 +92,7 @@ class Encryptor():
 
 
 if __name__ == "__main__":
-    directory = "/home/dev/personalProjects/inovators/johnBCSF/ImageEncryptor/webapp/test"
-    password = "Asidoh254"
+    directory = ""
+    password = ""
     enc = Encryptor(password)
     enc.encrypt_all_files(directory)
